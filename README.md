@@ -1,2 +1,2 @@
 # webapp
-This repo is for cloud computing
+This repo is for cloud computing course
