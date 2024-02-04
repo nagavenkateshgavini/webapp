@@ -1,2 +1,2 @@
-# webapp
-This repo is for cloud computing course
+# webapp_aws_cicd
+Cloud native web application
