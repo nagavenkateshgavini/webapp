@@ -1,3 +1,0 @@
-registered_apis = [
-    "healthz"
-]

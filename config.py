@@ -1,5 +1,4 @@
 import os
-import sys
 from sys import path
 
 from dotenv import load_dotenv
@@ -18,8 +17,12 @@ class Config:
     DEBUG = env.get("DEBUG", True)
     MYSQL_USER = env.get("MYSQL_USER", "test")
     MYSQL_PASSWORD = env.get("MYSQL_PASSWORD", "test@123")
+    MYSQL_HOST = env.get("MYSQL_HOST")
     MYSQL_DB = env.get("MYSQL_DB", "DB")
     MYSQL_PORT = env.get("MYSQL_PORT", "3306")
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}'
+    FLASK_APP = env.get("FLASK_APP")
+    FLASK_RUN_PORT = int(env.get("FLASK_RUN_PORT"))
 
 
 app_config = Config()
