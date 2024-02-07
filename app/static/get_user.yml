@@ -1,0 +1,7 @@
+end point to fetch user details
+---
+responses:
+  200:
+    description: When app runs without any issues
+  503:
+    description: server responds with 503 if it is not healthy

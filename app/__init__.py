@@ -1,4 +1,8 @@
 from flask import Flask
+from sqlalchemy_utils import database_exists, create_database
+from flasgger import Swagger
+
+from app.extensions import db, bcrypt
 
 from config import Config
 from app.extensions import db
@@ -31,7 +35,13 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
+    bcrypt.init_app(app)
     db.init_app(app)
+    Swagger(app)
+
+    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        create_database(app.config['SQLALCHEMY_DATABASE_URI'])
+
     with app.app_context():
         from app.models import user
         db.create_all()
@@ -39,9 +49,8 @@ def create_app(config_class=Config):
     # Register blueprints here
     from app.main.routes import bp as main_bp
     app.register_blueprint(main_bp, url_prefix="/")
-
     # hooks
-    app.before_request(preprocess_request)
-    app.after_request(add_no_cache_header)
+    #app.before_request(preprocess_request)
+    #app.after_request(add_no_cache_header)
 
     return app

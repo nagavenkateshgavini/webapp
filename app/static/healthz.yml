@@ -1,0 +1,10 @@
+end point to check the app health status
+---
+parameters:
+  - name: healthz
+
+responses:
+  200:
+    description: When app runs without any issues
+  503:
+    description: server responds with 503 if it is not healthy
