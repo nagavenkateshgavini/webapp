@@ -1,90 +1,245 @@
-{
-    "swagger": "2.0",
-    "info": {
-      "title": "Webapp APIs",
-      "version": "1.0.0"
+
+{"openapi": "3.0.1",
+  "info": {
+    "title": "Swagger docs for flask application",
+    "description": "This is api documentation for flask app",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "paths": {
-      "/healthz": {
-        "get": {
-          "description": "Healthcheck API",
-          "responses": {
-            "200": {
-              "description": "server responds with 200 OK if it is healthy."
-            },
-            "503": {
-              "description": "server responds with 503 if it is not healthy."
-            },
-            "405": {
-              "description": "server responds with 405 Method Not Allowed"
-            }
+    "version": "3.0.52"
+  },
+  "tags": [
+    {
+      "name": "public"
+    },
+    {
+      "name": "authenticated"
+    }
+  ],
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzget",
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "server responds with 200 OK if it is healthy."
+          },
+          "503":{
+            "description": "server responds with 503 if it is not healthy."
           }
         }
       },
-      "/v1/user": {
-        "post": {
-          "description": "create a user",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "user data",
-              "in": "body",
-              "description": "JSON data for the api",
-              "required": true,
+      "post": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzpost",
+        "responses": {
+          "405": {
+            "description": "server responds with 405 Method Not Allowed"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzput",
+        "responses": {
+          "405": {
+            "description": "server responds with 405 Method Not Allowed."
+          }
+        }
+      },
+       "delete": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzdelete",
+        "responses": {
+          "405": {
+            "description": "server responds with 405 Method Not Allowed."
+          }
+        }
+      },
+       "head": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzhead",
+        "responses": {
+          "405": {
+            "description": "server responds with 405 Method Not Allowed."
+          }
+        }
+      },
+       "options": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Healthcheck endpoint",
+        "operationId": "healthzoptions",
+        "responses": {
+          "405": {
+            "description": "server responds with 405 Method Not Allowed."
+          }
+        }
+      }},
+    "/v1/user": {
+      "post":{
+      "tags": [
+          "public"
+        ],
+        "summary": "create user",
+        "operationId": "create user",
+
+        "requestBody": {
+
+            "content": {
+              "application/json":{
               "schema": {
-                "$ref": "#/definitions/User"
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+        },
+        "responses": {
+          "201": {
+            "description": "user created",
+            "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
               },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "username": "john_doe",
-                    "password": "secure_password",
-                    "first_name": "John",
-                    "last_name": "Doe"
-                  }
-              }
+              "example":{
+                "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                "first_name": "Jane",
+                "last_name": "Doe",
+                "username": "jane.doe@example.com",
+                "account_created": "2016-08-29T09:12:33.001Z",
+                "account_updated": "2016-08-29T09:12:33.001Z"
+                }
               }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "User created"
-            },
-            "400": {
-              "description": "Bad request"
-            }
+          },
+          "400": {
+            "description": "bad request"
           }
         }
       }
     },
-    "definitions": {
+    "/v1/user/self":{
+      "put": {
+       "tags": [
+         "authenticated"
+        ],
+        "summary": "update user info",
+        "operationId": "update user",
+        "requestBody": {
+          "content": {
+            "application/json":{
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "no content"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      },
+      "get": {
+      "tags": [
+          "authenticated"
+        ],
+        "summary": "Get user information",
+        "operationId": "get user",
+        "responses": {
+          "200": {
+            "description": "returns user info",
+            "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example":{
+                "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                "first_name": "Jane",
+                "last_name": "Doe",
+                "username": "jane.doe@example.com",
+                "account_created": "2016-08-29T09:12:33.001Z",
+                "account_updated": "2016-08-29T09:12:33.001Z"
+                }
+              }
+            }
+            }
+          }
+        }
+      }
+  },
+  "components": {
+    "schemas": {
       "User": {
         "type": "object",
         "properties": {
+           "id": {
+            "title": "unique id",
+            "type": "string",
+            "description": "unique id",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+             "readOnly": true
+          },
           "username": {
-            "type": "string"
+            "title": "username of the user",
+            "type": "string",
+            "description": "provide email id",
+            "example": "jane.doe@example.com"
+
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "description": "password of the user",
+            "example": "123456789",
+            "writeOnly": true
           },
           "first_name": {
-            "type": "string"
+            "type": "string",
+            "description": "first name of the user",
+            "example": "Jane"
           },
           "last_name": {
-            "type": "string"
+            "type": "string",
+            "description": "last name of the user",
+            "example": "Doe"
           },
           "account_created": {
-            "type": "Date"
+            "type": "object",
+            "description": "account creation time",
+           "readOnly": true
           },
           "account_updated": {
-            "type": "Date"
+            "type": "object",
+            "description": "account updated time",
+           "readOnly": true
           }
         }
       }
     }
   }
+}
