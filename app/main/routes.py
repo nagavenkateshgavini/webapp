@@ -1,7 +1,7 @@
 from flask import Response, request, make_response
 from flask import Blueprint
 
-from error import error_handler
+from error import error_handler, CustomError
 from log import logger
 from service.utils import db_utils
 from service.user import account_manager
@@ -33,6 +33,7 @@ def healthcheck() -> Response:
 @error_handler
 def get_user() -> dict:
     logger.debug("get_user gets called")
+
     _parse_get_user(request)
     username, password = request.headers['Authorization'].split(':')
     user_obj = user.User(
@@ -47,8 +48,8 @@ def get_user() -> dict:
 def update_user() -> Response:
     logger.debug("update_user gets called")
     _validate_headers(request)
-    req = request.json
-    _parse_update_user(req)
+
+    _parse_update_user(request)
 
     # authenticate
     username, password = request.headers['Authorization'].split(":")
@@ -57,6 +58,8 @@ def update_user() -> Response:
         password=password
     )
     user_obj = account_manager.authenticate_user_and_return_obj(user_obj)
+
+    req = request.json
 
     # update_user
     account_manager.update_user(user_obj, req)
@@ -69,7 +72,7 @@ def update_user() -> Response:
 def create_user() -> Response:
     logger.debug("create_user gets called")
 
-    if request.method != "POST":
+    if request.method != "POST" or request.content_type != "application/json":
         return make_response('', 400)
 
     req = request.json

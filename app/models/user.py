@@ -1,6 +1,8 @@
 import datetime
+import uuid
 
-from sqlalchemy import String, LargeBinary
+from sqlalchemy import String
+from sqlalchemy import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 import bcrypt
 
@@ -12,7 +14,8 @@ class Base(DeclarativeBase):
 
 
 class User(db.Model):
-    username: Mapped[str] = mapped_column(String(40), primary_key=True, nullable=False)
+    id: Mapped[str] = mapped_column(String(60), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
+    username: Mapped[str] = mapped_column(String(40), primary_key=True, unique=True, nullable=False)
     first_name: Mapped[str] = mapped_column(String(40))
     last_name: Mapped[str] = mapped_column(String(40))
     password: Mapped[str] = mapped_column(String(120))

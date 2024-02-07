@@ -16,6 +16,10 @@ def error_handler(func):
             return make_response({"error": e.message}, e.status_code)
         except AuthError as e:
             return make_response({"error": e.message}, e.status_code)
+        except InvalidInputError as e:
+            return make_response({"error": e.message}, e.status_code)
+        except CustomError as e:
+            return make_response({"error": e.message}, e.status_code)
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
             logger.error(error_message, sys.exc_info())
@@ -47,7 +51,7 @@ class InvalidInputError(CustomError):
 class NotFoundError(CustomError):
     """Raised when the input provided is invalid."""
     def __init__(self, message="Invalid input"):
-        super().__init__(status_code=401, message=message)
+        super().__init__(status_code=404, message=message)
 
 
 class AuthError(CustomError):
