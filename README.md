@@ -26,5 +26,5 @@ pip install -r requirements.txt
   - flask application with CRUD operations
   - Exception handling with custom error message and status codes in python flask app
 
-
-maxcountryman/flask-bcrypt
+This repo uses the following module for generating password hashed with salt
+- maxcountryman/flask-bcrypt
