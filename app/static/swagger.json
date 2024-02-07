@@ -1,0 +1,90 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Webapp APIs",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/healthz": {
+        "get": {
+          "description": "Healthcheck API",
+          "responses": {
+            "200": {
+              "description": "server responds with 200 OK if it is healthy."
+            },
+            "503": {
+              "description": "server responds with 503 if it is not healthy."
+            },
+            "405": {
+              "description": "server responds with 405 Method Not Allowed"
+            }
+          }
+        }
+      },
+      "/v1/user": {
+        "post": {
+          "description": "create a user",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "user data",
+              "in": "body",
+              "description": "JSON data for the api",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "username": "john_doe",
+                    "password": "secure_password",
+                    "first_name": "John",
+                    "last_name": "Doe"
+                  }
+              }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User created"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "account_created": {
+            "type": "Date"
+          },
+          "account_updated": {
+            "type": "Date"
+          }
+        }
+      }
+    }
+  }

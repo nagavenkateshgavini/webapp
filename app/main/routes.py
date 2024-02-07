@@ -1,6 +1,5 @@
 from flask import Response, request, make_response
 from flask import Blueprint
-from flasgger import swag_from
 
 from error import error_handler
 from log import logger
@@ -15,7 +14,6 @@ bp = Blueprint('main', __name__)
 
 @bp.route("/healthz", methods=['GET'])
 @error_handler
-@swag_from('../static/healthz.yml')
 def healthcheck() -> Response:
     logger.debug("health api gets called")
 
