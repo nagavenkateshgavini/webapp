@@ -33,32 +33,39 @@ def _parse_insert_user(req):
 
     validate_dict_keys(req)
 
-    if not req["username"]:
-        raise InvalidInputError("username is required")
+    if not req.get("username"):
+        raise InvalidInputError("all fields are mandatory")
 
     if not validate_email(req['username']):
         raise InvalidInputError("username should be your email")
 
     if not req.get("password"):
-        raise InvalidInputError("password is required")
+        raise InvalidInputError("all fields are mandatory")
 
     if not validate_password(req["password"]):
         raise InvalidInputError("atleast 8 chars, one upper, one lower, one digit, "
                                 "one special, eg: R@123d45jn")
 
     if not req["first_name"]:
-        raise InvalidInputError("first_name is required")
+        raise InvalidInputError("all fields are mandatory")
 
     if not req["last_name"]:
-        raise InvalidInputError("last_name is required")
+        raise InvalidInputError("all fields are mandatory")
+
+    if has_numbers(req['last_name']):
+        raise InvalidInputError("last_name should be string")
+
+    if has_numbers(req['first_name']):
+        raise InvalidInputError("first_name should be string")
 
 
 def _parse_get_user(req):
     if req.data or req.query_string:
         raise InvalidInputError("no data is accepted")
 
-    if not req.headers["Authorization"]:
-        raise InvalidInputError("user name can't be updated")
+
+def has_numbers(input_str):
+    return any(char.isdigit() for char in input_str)
 
 
 def _parse_update_user(req):
@@ -73,7 +80,21 @@ def _parse_update_user(req):
     if req.get('password'):
         validate_password(req['password'])
 
+    if req.get("first_name"):
+        if has_numbers(req['first_name']):
+            raise InvalidInputError("first_name should be string")
 
-def _validate_headers(req):
-    if not req.headers["Authorization"]:
-        raise InvalidInputError("user name can't be updated")
+    if req.get("last_name"):
+        if has_numbers(req['last_name']):
+            raise InvalidInputError("last_name should be string")
+
+    if "last_name" in req:
+        if not req['last_name']:
+            raise InvalidInputError("last_name should not be empty")
+
+    if "first_name" in req:
+        if not req['first_name']:
+            raise InvalidInputError("first_name should not be empty")
+
+    if "username" in req:
+        raise InvalidInputError("username can not be updated")

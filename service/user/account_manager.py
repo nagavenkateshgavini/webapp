@@ -41,7 +41,7 @@ def insert_user(user_obj: User) -> None:
 
 def update_user(user_obj: User, req: dict) -> None:
     if "password" in req:
-        db.session.user_obj.hash_password(req['password'])
+        user_obj.hash_password(req['password'])
 
     if "first_name" in req:
         user_obj.first_name = req['first_name']

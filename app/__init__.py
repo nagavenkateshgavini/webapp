@@ -20,11 +20,6 @@ def preprocess_request():
 
 
 def add_no_cache_header(response):
-    # if request
-    #     response = make_response('')
-    #     response.headers['Content-Type'] = 'text/plain'
-    #     response.status_code = 405
-
     response.headers['Cache-Control'] = 'no-cache'
 
     return response
@@ -60,8 +55,7 @@ def create_app(config_class=Config):
     # Register blueprints here
     from app.main.routes import bp as main_bp
     app.register_blueprint(main_bp, url_prefix="/")
-    # hooks
-    #app.before_request(preprocess_request)
+
     app.after_request(add_no_cache_header)
 
     return app

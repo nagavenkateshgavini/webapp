@@ -1,5 +1,6 @@
+from typing import Union
 from flask import Response, request, make_response
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 from error import error_handler, CustomError
 from log import logger
@@ -7,7 +8,7 @@ from service.utils import db_utils
 from service.user import account_manager
 from app.models import user
 from app.main.parsers import _parse_insert_user, \
-    _parse_get_user, _parse_update_user, _validate_headers
+    _parse_get_user, _parse_update_user
 
 bp = Blueprint('main', __name__)
 
@@ -28,14 +29,17 @@ def healthcheck() -> Response:
 
     return make_response('', 200)
 
-
 @bp.route("/v1/user/self", methods=['GET'])
 @error_handler
-def get_user() -> dict:
+def get_user() -> Union[Response, dict]:
     logger.debug("get_user gets called")
 
+    auth = request.authorization
+    if not auth:
+        return make_response({"error": "basic auth is required"}, 401)
+
     _parse_get_user(request)
-    username, password = request.headers['Authorization'].split(':')
+    username, password = auth.username, auth.password
     user_obj = user.User(
         username=username,
         password=password
@@ -47,12 +51,13 @@ def get_user() -> dict:
 @error_handler
 def update_user() -> Response:
     logger.debug("update_user gets called")
-    _validate_headers(request)
+    auth = request.authorization
+    if not auth:
+        return make_response({"error": "basic auth is required"}, 401)
 
     _parse_update_user(request)
-
     # authenticate
-    username, password = request.headers['Authorization'].split(":")
+    username, password = auth.username, auth.password
     user_obj = user.User(
         username=username,
         password=password
