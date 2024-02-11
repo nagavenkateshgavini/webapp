@@ -29,6 +29,7 @@ def healthcheck() -> Response:
 
     return make_response('', 200)
 
+
 @bp.route("/v1/user/self", methods=['GET'])
 @error_handler
 def get_user() -> Union[Response, dict]:
@@ -85,7 +86,7 @@ def create_user() -> Response:
     user_obj = _prepare_user_obj(req)
     account_manager.insert_user(user_obj)
 
-    return make_response('', 201)
+    return make_response(user_obj.as_dict(), 201)
 
 
 def _prepare_user_obj(req):

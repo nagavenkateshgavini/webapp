@@ -54,7 +54,13 @@ class NotFoundError(CustomError):
         super().__init__(status_code=404, message=message)
 
 
+class ConflictError(CustomError):
+    """Raised when the input provided is invalid."""
+    def __init__(self, message="Invalid input"):
+        super().__init__(status_code=409, message=message)
+
+
 class AuthError(CustomError):
     """Raised when the input provided is invalid."""
     def __init__(self, message="Invalid input"):
-        super().__init__(status_code=404, message=message)
+        super().__init__(status_code=401, message=message)

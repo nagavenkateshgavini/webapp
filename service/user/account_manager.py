@@ -2,7 +2,7 @@ from app.extensions import db
 from sqlalchemy.exc import NoResultFound, IntegrityError
 
 from app.models.user import User
-from error import NotFoundError, AuthError, InvalidInputError
+from error import NotFoundError, AuthError, InvalidInputError, ConflictError
 
 from log import logger
 
@@ -13,10 +13,10 @@ def authenticate_user_and_return_obj(user_obj: User):
         user_from_db = db.session.execute(db.select(User).filter_by(
             username=user_obj.username)).scalar_one()
     except NoResultFound:
-        raise NotFoundError("no user found")
+        raise AuthError("user is not authenticated")
 
     if not user_from_db:
-        raise NotFoundError("entry not found")
+        raise AuthError("user is not authenticated")
 
     if user_from_db.verify_password(user_obj.password):
         return user_from_db
@@ -36,7 +36,7 @@ def insert_user(user_obj: User) -> None:
     try:
         db.session.commit()
     except IntegrityError:
-        raise InvalidInputError("user exists already, create  a new one")
+        raise ConflictError("user exists already, create  a new one")
 
 
 def update_user(user_obj: User, req: dict) -> None:
