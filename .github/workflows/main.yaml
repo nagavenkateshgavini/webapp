@@ -1,6 +1,6 @@
 name: CI for application
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - main
 jobs:
@@ -17,5 +17,5 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pytho
-          p
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
