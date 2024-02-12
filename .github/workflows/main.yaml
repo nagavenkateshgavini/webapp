@@ -29,8 +29,8 @@ jobs:
 
       - name: Start mysql
         run: | 
-          service mysql start
-          service mysql status
+          sudo service mysql start
+          sudo service mysql status
 
       - name: Set up env variables
         run: |
