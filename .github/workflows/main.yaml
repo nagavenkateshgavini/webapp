@@ -13,7 +13,7 @@ jobs:
       MYSQL_DB: application
       MYSQL_PORT: 3306
       FLASK_APP: "app"
-      LOG_FILE: '/var/logs/webapp_aws_cicd.log'
+      LOG_FILE: './var/logs/webapp_aws_cicd.log'
 
     steps:
       - name: Checkout repository
