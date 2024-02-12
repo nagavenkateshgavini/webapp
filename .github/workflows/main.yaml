@@ -25,6 +25,8 @@ jobs:
         run: | 
           sudo service mysql start
           sudo service mysql status
+          sudo mysql --user=root --password=root -e 'show databases';
+          
 
       - name: set env variable
         run: |
