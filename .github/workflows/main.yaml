@@ -26,14 +26,10 @@ jobs:
           sudo service mysql start
           sudo service mysql status
           sudo mysql --user=root --password=root -e 'show databases';
-          
-
-      - name: set env variable
-        run: |
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root@$127.0.0.1:3306/application" >> $GITHUB_ENV
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root@$127.0.0.1:3306/application"
 
       - name: Run tests
         run: |
           export FLASK_APP=app
           pytest
+        env:
+          SQLALCHEMY_DATABASE_URI: mysql+pymysql://root:root@$127:0:0:1:3306/application
