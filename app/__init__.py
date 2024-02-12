@@ -34,6 +34,7 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        print(app.config['SQLALCHEMY_DATABASE_URI'])
         create_database(app.config['SQLALCHEMY_DATABASE_URI'])
 
     with app.app_context():
