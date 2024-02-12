@@ -26,10 +26,5 @@ jobs:
           sudo service mysql start
           sudo service mysql status
 
-      - name: Set up env variables
-        run: |
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}"
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}" >> $GITHUB_ENV
-
       - name: Run tests
         run: pytest
