@@ -6,12 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DB: ${{ secrets.MYSQL_DB }}
-      USER: ${{ secrets.MYSQL_USER }}
-      PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-      HOST: ${{ secrets.MYSQL_HOST }}
-      PORT: ${{ secrets.MYSQL_PORT }}
 
     steps:
       - name: Checkout repository
@@ -34,8 +28,8 @@ jobs:
 
       - name: Set up env variables
         run: |
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://$USER:$PASSWORD@$HOST:$PORT/$DB"
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://$USER:$PASSWORD@$HOST:$PORT/$DB" >> $GITHUB_ENV
+          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}"
+          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}" >> $GITHUB_ENV
 
       - name: Run tests
         run: pytest
