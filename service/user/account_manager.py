@@ -2,7 +2,7 @@ from app.extensions import db
 from sqlalchemy.exc import NoResultFound, IntegrityError
 
 from app.models.user import User
-from error import NotFoundError, AuthError, InvalidInputError, ConflictError
+from error import AuthError, ConflictError
 
 from log import logger
 

@@ -39,7 +39,7 @@ class CustomError(Exception):
 class DatabaseConnectionError(CustomError):
     """Raised when there is an issue connecting to the database."""
     def __init__(self, message="Database connection error"):
-        super().__init__(status_code=500, message=message)
+        super().__init__(status_code=503, message=message)
 
 
 class InvalidInputError(CustomError):

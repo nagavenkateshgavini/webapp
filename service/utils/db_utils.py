@@ -1,14 +1,11 @@
-from sqlalchemy import create_engine
-from config import app_config
+from app import db
+from sqlalchemy import text
+
+from error import DatabaseConnectionError
 
 
 def check_db_connection():
-    user_name = app_config.MYSQL_USER
-    password = app_config.MYSQL_PASSWORD
-    port = app_config.MYSQL_PORT
-    db_name = app_config.MYSQL_DB
-    database_uri = f'mysql+pymysql://{user_name}:{password}@127.0.0.1:{port}/{db_name}'
-    engine = create_engine(database_uri)
-    with engine.connect() as connection:
-        return connection
-
+    try:
+        db.session.execute(text('SELECT 1'))
+    except DatabaseConnectionError as e:
+        raise DatabaseConnectionError(f"{e.message}")
