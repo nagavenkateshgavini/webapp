@@ -24,5 +24,4 @@ class Config:
     FLASK_APP = env.get("FLASK_APP")
 
 
-
 app_config = Config()
