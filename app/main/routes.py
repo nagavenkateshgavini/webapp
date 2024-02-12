@@ -1,8 +1,8 @@
 from typing import Union
 from flask import Response, request, make_response
-from flask import Blueprint, jsonify
+from flask import Blueprint
 
-from error import error_handler, CustomError
+from error import error_handler
 from log import logger
 from service.utils import db_utils
 from service.user import account_manager

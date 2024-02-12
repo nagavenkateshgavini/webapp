@@ -28,8 +28,7 @@ jobs:
           sudo mysql --user=root --password=root -e 'show databases';
 
       - name: Run tests
-        run: |
-          export FLASK_APP=app
-          pytest
+        run: pytest
         env:
           SQLALCHEMY_DATABASE_URI: "mysql+pymysql://root:root@$127:0:0:1:3306/application"
+          FLASK_APP: "app"
