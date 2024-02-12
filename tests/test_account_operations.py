@@ -91,5 +91,14 @@ class TestAccountOperations(TestCase):
                                                                        create_account_data["password"]))
         assert response.status_code == 200
 
+    def test_health_check(self):
+        response = self.client.get('/healthz')
+        assert response.status_code == 200
+        assert response.data == b''
+
+        response = self.client.post('/healthz')
+        assert response.status_code == 405
+
+
 # Run the tests
 # pytest -v test_account_operations.py
