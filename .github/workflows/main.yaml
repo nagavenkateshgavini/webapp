@@ -7,7 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: "127.0.0.1"
+      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      MYSQL_DB: ${{ secrets.MYSQL_DB }}
+      FLASK_APP: "app"
 
     steps:
       - name: Checkout repository
@@ -24,13 +28,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Start mysql
-        run: | 
-          sudo service mysql start
-          sudo service mysql status
-          sudo mysql --user=root --password=root -e 'show databases';
+        run: sudo service mysql start
+
+      - name: setup log file
+        run: sudo mkdir -p /var/logs && sudo touch /var/logs/webapp_aws_cicd.log
 
       - name: Run tests
         run: pytest
-        env:
-          SQLALCHEMY_DATABASE_URI: "mysql+pymysql://root:root@$127:0:0:1:3306/application"
-          FLASK_APP: "app"
