@@ -32,4 +32,6 @@ jobs:
           echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root@$127.0.0.1:3306/application"
 
       - name: Run tests
-        run: pytest
+        run: |
+          export FLASK_APP=app
+          pytest
