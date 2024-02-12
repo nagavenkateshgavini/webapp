@@ -36,4 +36,4 @@ jobs:
         run: mkdir -p ./var/logs && touch ./var/logs/webapp_aws_cicd.log
 
       - name: Run tests
-        run: pytest -v test_account_operations.py
+        run: pytest -v
