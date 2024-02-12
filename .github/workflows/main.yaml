@@ -28,9 +28,8 @@ jobs:
 
       - name: set env variable
         run: |
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}"
-          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@${{ secrets.MYSQL_HOST }}:${{ secrets.MYSQL_PORT }}/${{ secrets.MYSQL_DB }}" >> $GITHUB_ENV 
-          echo ${{ secrets.MYSQL_HOST }}
+          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root@$127.0.0.1:3306/application" >> $GITHUB_ENV
+          echo "SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root@$127.0.0.1:3306/application"
 
       - name: Run tests
         run: pytest
