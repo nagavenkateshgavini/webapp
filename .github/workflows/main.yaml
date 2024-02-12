@@ -7,10 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-      MYSQL_USER: ${{ secrets.MYSQL_USER }}
-      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-      MYSQL_DB: ${{ secrets.MYSQL_DB }}
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: application
       MYSQL_PORT: 3306
       FLASK_APP: "app"
 
