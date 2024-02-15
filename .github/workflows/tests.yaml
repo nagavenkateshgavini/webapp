@@ -7,7 +7,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: ${{ env.$MYSQL_HOST }}
+      MYSQL_HOST: ${{ env.MYSQL_HOST }}
       MYSQL_USER: ${{ env.MYSQL_USER }}
       MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
       MYSQL_DB: ${{ env.MYSQL_DB }}
