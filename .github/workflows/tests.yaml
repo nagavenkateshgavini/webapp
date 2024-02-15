@@ -7,11 +7,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: $MYSQL_HOST
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-      MYSQL_DB: $MYSQL_DB
-      MYSQL_PORT: $MYSQL_PORT
+      MYSQL_HOST: ${{ env.$MYSQL_HOST }}
+      MYSQL_USER: ${{ env.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+      MYSQL_DB: ${{ env.MYSQL_DB }}
+      MYSQL_PORT: ${{ env.MYSQL_PORT }}
       FLASK_APP: "app"
       LOG_FILE: './var/logs/webapp_aws_cicd.log'
 
