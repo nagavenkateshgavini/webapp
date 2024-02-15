@@ -1,17 +1,17 @@
-name: CI for application
+name: Tests for application
 on:
   pull_request:
     branches:
       - main
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: 127.0.0.1
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DB: application
-      MYSQL_PORT: 3306
+      MYSQL_HOST: $MYSQL_HOST
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DB: $MYSQL_DB
+      MYSQL_PORT: $MYSQL_PORT
       FLASK_APP: "app"
       LOG_FILE: './var/logs/webapp_aws_cicd.log'
 
