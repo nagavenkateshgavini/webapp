@@ -23,5 +23,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}'
     FLASK_APP = env.get("FLASK_APP")
 
+    def __init__(self):
+        print(Config.SQLALCHEMY_DATABASE_URI)
+
 
 app_config = Config()
