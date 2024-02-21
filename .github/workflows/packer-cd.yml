@@ -39,7 +39,7 @@ jobs:
           sudo chmod 666 /var/log/webappLogs/webapp.log
 
       - name: Run tests
-        run: sudo pytest -v
+        run: pytest -v
 
       - name: authenticate gcloud
         uses: google-github-actions/auth@v2
