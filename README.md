@@ -25,13 +25,32 @@ pip install -r requirements.txt
   - back end python application with flask
   - flask application with CRUD operations
   - Exception handling with custom error message and status codes in python flask app
+  - Integrations tests with pytest framework, tests the integration between mysql and flask API server
+  - Google cloud golden Image creation with packer when new PR gets merged
 
 This repo uses the following module for generating password hashed with salt
 - maxcountryman/flask-bcrypt
 
 ## Packer runs
+
+Install plugins
 ```commandline
-packer init
+packer init packer/gci-machine-image.pkr.hcl
+```
+
+Format the packer file
+```commandline
+packer fmt packer/gci-machine-image.pkr.hcl
+```
+
+Validate packer configuration
+```commandline
+packer validate packer/gci-machine-image.pkr.hcl
+```
+
+Build Image and upload google cloud
+```commandline
+packer build packer/gci-machine-image.pkr.hcl
 ```
 
 
