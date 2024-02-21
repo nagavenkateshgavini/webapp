@@ -11,9 +11,8 @@ jobs:
       MYSQL_USER: ${{ secrets.MYSQL_USER }}
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       MYSQL_DB: ${{ secrets.MYSQL_DB }}
-      MYSQL_PORT: 3306
       FLASK_APP: "app"
-      LOG_FILE: './var/logs/webapp_aws_cicd.log'
+      LOG_FILE: './var/logs/webapp.log'
 
     steps:
       - name: Checkout repository
@@ -33,7 +32,7 @@ jobs:
         run: sudo service mysql start
 
       - name: setup log file
-        run: mkdir -p ./var/logs && touch ./var/logs/webapp_aws_cicd.log
+        run: mkdir -p ./var/logs && touch ./var/logs/webapp.log
 
       - name: Run tests
         run: pytest -v

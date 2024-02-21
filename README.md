@@ -29,4 +29,9 @@ pip install -r requirements.txt
 This repo uses the following module for generating password hashed with salt
 - maxcountryman/flask-bcrypt
 
-More details soon
+## Packer runs
+```commandline
+packer init
+```
+
+

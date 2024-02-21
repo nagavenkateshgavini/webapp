@@ -19,7 +19,7 @@ class TestAccountOperations(TestCase):
     def generate_random_username():
         return fake.email()
 
-    def create_account(self, username=None):
+    def get_user_data(self, username=None):
         if username is None:
             username = self.generate_random_username()
 
@@ -29,9 +29,12 @@ class TestAccountOperations(TestCase):
             "first_name": "sai kumar",
             "last_name": "wow"
         }
+
+        return data
+
+    def create_account(self, data):
         response = self.client.post('/v1/user', json=data)
         assert response.status_code == 201
-        return data
 
     @staticmethod
     def get_basic_auth_headers(username, password):
@@ -39,24 +42,29 @@ class TestAccountOperations(TestCase):
         encoded_auth_str = base64.b64encode(auth_str.encode()).decode('utf-8')
         return {'Authorization': f'Basic {encoded_auth_str}'}
 
-    def test_create_account(self):
-        create_account_data = self.create_account()
+    def test_user_apis(self):
+        # create account
+        data = self.get_user_data()
+        self.create_account(data)
 
+        # get api
         response = self.client.get(
             '/v1/user/self',
             headers=self.get_basic_auth_headers(
-                create_account_data["username"], create_account_data["password"])
+                data["username"], data["password"])
         )
 
         assert response.status_code == 200
-        assert response.json["username"] == create_account_data["username"]
-        assert response.json["first_name"] == create_account_data["first_name"]
-        assert response.json["last_name"] == create_account_data["last_name"]
+        assert response.json["username"] == data["username"]
+        assert response.json["first_name"] == data["first_name"]
+        assert response.json["last_name"] == data["last_name"]
         assert 'account_updated' in response.json
         assert 'account_created' in response.json
 
-    def test_update_account(self):
-        create_account_data = self.create_account()
+        # update api
+        res_user_name = response.json["username"]
+        password = data['password']
+
         updated_data = {
             "first_name": "python",
             "last_name": "pip"
@@ -65,31 +73,21 @@ class TestAccountOperations(TestCase):
         # add sleep to check the account_updated value
         time.sleep(3)
         update_response = self.client.put('/v1/user/self', json=updated_data,
-                                          headers=self.get_basic_auth_headers(create_account_data["username"],
-                                                                              create_account_data["password"]))
+                                          headers=self.get_basic_auth_headers(res_user_name, password))
         assert update_response.status_code == 204
 
-        response = self.client.get(
+        update_response = self.client.get(
             '/v1/user/self',
-            headers=self.get_basic_auth_headers(
-                create_account_data["username"], create_account_data["password"])
+            headers=self.get_basic_auth_headers(res_user_name, password)
         )
 
-        assert response.status_code == 200
-        assert response.json["username"] == create_account_data["username"]
-        assert response.json["first_name"] == updated_data["first_name"]
-        assert response.json["last_name"] == updated_data["last_name"]
-        assert 'account_updated' in response.json
-        assert 'account_created' in response.json
-        assert response.json["account_created"] != response.json["account_updated"]
-
-    def test_get_user(self):
-        create_account_data = self.create_account()
-
-        response = self.client.get('/v1/user/self',
-                                   headers=self.get_basic_auth_headers(create_account_data["username"],
-                                                                       create_account_data["password"]))
-        assert response.status_code == 200
+        assert update_response.status_code == 200
+        assert update_response.json["username"] == res_user_name
+        assert update_response.json["first_name"] == updated_data["first_name"]
+        assert update_response.json["last_name"] == updated_data["last_name"]
+        assert 'account_updated' in update_response.json
+        assert 'account_created' in update_response.json
+        assert update_response.json["account_created"] != update_response.json["account_updated"]
 
     def test_health_check(self):
         response = self.client.get('/healthz')
