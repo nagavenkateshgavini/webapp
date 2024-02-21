@@ -47,4 +47,4 @@ sudo systemctl enable csye6225.service
 
 sudo systemctl status csye6225
 
-journalctl -u csye6225.service
+# sudo journalctl -u csye6225.service
