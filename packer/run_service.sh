@@ -43,5 +43,3 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable csye6225.service
-
-sudo systemctl status csye6225
