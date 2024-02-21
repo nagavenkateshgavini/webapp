@@ -42,13 +42,35 @@ variable gcp_sa_key {
   default = env("GCP_CREDENTIALS")
 }
 
+variable project_id {
+  type    = string
+  default = env("GCP_PROJECT_ID")
+}
+
+variable build_network {
+  type    = string
+  default = env("GCP_IMAGE_BUILD_NETWORK")
+}
+
+variable build_image_zone {
+  type    = string
+  default = env("BUILD_IMAGE_ZONE")
+}
+
+variable source_gci_image {
+  type    = string
+  default = env("SOURCE_GCI_IMAGE")
+}
+
+
 source "googlecompute" "centos-stream-8" {
-  project_id   = "csye-project-413917"
-  source_image = "centos-stream-8-v20240110"
+  project_id   = "${var.project_id}"
+  source_image = "${var.source_gci_image}"
   ssh_username = "packer"
-  zone         = "us-east1-b"
+  zone         = "${var.build_image_zone}"
   account_file = "${var.gcp_sa_key}"
-  network      = "default"
+  network      = "${var.build_network}"
+  machine_type = "e2-standard-8"
 }
 
 build {
