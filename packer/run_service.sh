@@ -9,7 +9,7 @@ sudo chown csye6225:csye6225 webapp
 
 HOME="/home/csye6225"
 
-pip install -r requirements.txt
+pip install -r $HOME/webapp/requirements.txt
 
 PYTHON_PATH=$(which python3.9)
 echo $PYTHON_PATH
