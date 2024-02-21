@@ -16,9 +16,9 @@ jobs:
       LOG_FILE: ${{ secrets.LOG_FILE }}
 
     steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
 #      - name: Set up python
 #        uses: actions/setup-python@v5
 #        with:
