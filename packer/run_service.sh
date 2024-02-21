@@ -5,8 +5,6 @@ sudo dnf install -y unzip
 unzip webapp.zip -d webapp
 pwd
 
-sudo chown csye6225:csye6225 webapp
-
 HOME="/home/csye6225"
 
 pip install -r $HOME/webapp/requirements.txt
@@ -18,7 +16,8 @@ echo $PYTHON_PATH
 sudo mkdir -p /var/log/webappLogs
 sudo chown csye6225:csye6225 /var/log/webappLogs
 sudo touch $LOG_FILE
-sudo chmod 660 $LOG_FILE
+sudo chown csye6225:csye6225 /var/log/webappLogs/webapp.log
+sudo chmod 666 $LOG_FILE
 
 sudo tee /etc/systemd/system/csye6225.service <<EOF
 [Unit]
@@ -46,5 +45,3 @@ sudo systemctl daemon-reload
 sudo systemctl enable csye6225.service
 
 sudo systemctl status csye6225
-
-# sudo journalctl -u csye6225.service

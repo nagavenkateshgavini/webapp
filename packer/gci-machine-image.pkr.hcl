@@ -108,9 +108,9 @@ build {
     ]
   }
 
-#  provisioner "shell" {
-#    script = "packer/create_user.sh"
-#  }
+  provisioner "shell" {
+    script = "packer/create_user.sh"
+  }
 
   provisioner "shell" {
     script = "packer/run_service.sh"
