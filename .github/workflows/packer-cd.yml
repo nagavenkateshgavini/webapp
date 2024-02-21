@@ -36,7 +36,7 @@ jobs:
         run: |
           sudo mkdir -p /var/log/webappLogs
           sudo touch /var/log/webappLogs/webapp.log
-          sudo chmod 655 /var/log/webappLogs
+          sudo chmod 755 /var/log/webappLogs/webapp.log
 
       - name: Run tests
         run: pytest -v
