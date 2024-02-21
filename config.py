@@ -13,7 +13,7 @@ env = os.environ
 
 class Config:
     LOG_LEVEL = env.get("LOG_LEVEL", "INFO")
-    LOG_FILE = env.get("LOG_FILE")
+    LOG_FILE = env.get("LOG_FILE", "/var/log/webappLogs/webapp.log")
     DEBUG = env.get("DEBUG")
     MYSQL_USER = env.get("MYSQL_USER", "root")
     MYSQL_PASSWORD = env.get("MYSQL_PASSWORD")
