@@ -10,10 +10,10 @@ jobs:
   packer-build:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: '${{ secrets.MYSQL_HOST }}',
-      MYSQL_USER: '${{ secrets.MYSQL_USER }}',
-      MYSQL_DB: '${{ secrets.MYSQL_DB }}',
-      FLASK_APP: 'app',
+      MYSQL_HOST: '${{ secrets.MYSQL_HOST }}'
+      MYSQL_USER: '${{ secrets.MYSQL_USER }}'
+      MYSQL_DB: '${{ secrets.MYSQL_DB }}'
+      FLASK_APP: 'app'
       LOG_FILE: '${{ secrets.LOG_FILE }}'
     steps:
       - name: Checkout repository
