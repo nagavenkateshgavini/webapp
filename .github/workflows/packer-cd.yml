@@ -36,10 +36,10 @@ jobs:
         run: |
           sudo mkdir -p /var/log/webappLogs
           sudo touch /var/log/webappLogs/webapp.log
-          sudo chmod 755 /var/log/webappLogs/webapp.log
+          sudo chmod 666 /var/log/webappLogs/webapp.log
 
       - name: Run tests
-        run: pytest -v
+        run: sudo pytest -v
 
       - name: authenticate gcloud
         uses: google-github-actions/auth@v2
