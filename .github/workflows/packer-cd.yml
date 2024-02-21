@@ -10,11 +10,12 @@ jobs:
   packer-build:
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: '${{ secrets.MYSQL_HOST }}'
-      MYSQL_USER: '${{ secrets.MYSQL_USER }}'
-      MYSQL_DB: '${{ secrets.MYSQL_DB }}'
+      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_DB: ${{ secrets.MYSQL_DB }}
       FLASK_APP: 'app'
-      LOG_FILE: '${{ secrets.LOG_FILE }}'
+      LOG_FILE: ${{ secrets.LOG_FILE }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,13 +61,16 @@ jobs:
       - name: Create webapp.zip
         run: |
           zip -r webapp.zip .
+
       - name: Initialize Packer Configuration and Format packer file
         run: |
           packer init packer/gci-machine-image.pkr.hcl
           packer fmt packer/gci-machine-image.pkr.hcl
+
       - name: Validate Packer Configuration
         run: |
           packer validate packer/gci-machine-image.pkr.hcl
+
       - name: Build Golden Image for GCE
         run: |
           packer build packer/gci-machine-image.pkr.hcl
