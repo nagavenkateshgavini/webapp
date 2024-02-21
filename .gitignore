@@ -161,4 +161,5 @@ cython_debug/
 .env*
 tox*
 *.pem*
+*.zip
 
