@@ -47,7 +47,7 @@ source "googlecompute" "centos-stream-8" {
   source_image = "centos-stream-8-v20240110"
   ssh_username = "packer"
   zone         = "us-east1-b"
-  account_file = "${var.GCP_CREDENTIALS}"
+  account_file = "${var.gcp_sa_key}"
   network      = "default"
 }
 
