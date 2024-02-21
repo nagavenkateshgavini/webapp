@@ -33,7 +33,9 @@ jobs:
         run: sudo service mysql start
 
       - name: setup log file
-        run: sudo mkdir -p /var/log/webappLogs && sudo touch /var/log/webappLogs/webapp.log
+        run: |
+          sudo mkdir -p /var/log/webappLogs && sudo touch /var/log/webappLogs/webapp.log
+          chmod 655 /var/log/webappLogs
 
       - name: Run tests
         run: pytest -v
