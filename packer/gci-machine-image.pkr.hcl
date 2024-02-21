@@ -66,7 +66,7 @@ variable source_gci_image {
 source "googlecompute" "centos-stream-8" {
   project_id   = "${var.project_id}"
   source_image = "${var.source_gci_image}"
-  ssh_username = "packer"
+  ssh_username = "csye6225"
   zone         = "${var.build_image_zone}"
   account_file = "${var.gcp_sa_key}"
   network      = "${var.build_network}"
