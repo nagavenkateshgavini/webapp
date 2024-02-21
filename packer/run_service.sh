@@ -10,7 +10,7 @@ sudo chown csye6225:csye6225 webapp
 HOME="/home/csye6225"
 sudo mv webapp $HOME/webapp
 
-pip3 install -r $HOME/webapp/requirements.txt
+sudo pip3 install -r $HOME/webapp/requirements.txt
 
 PYTHON_PATH=$(which python3.9)
 echo $PYTHON_PATH
