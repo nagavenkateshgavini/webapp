@@ -32,7 +32,7 @@ jobs:
         run: sudo service mysql start
 
       - name: setup log file
-        run: mkdir -p /var/log/webappLogs && touch /var/log/webappLogs/webapp.log
+        run: sudo mkdir -p /var/log/webappLogs && sudo touch /var/log/webappLogs/webapp.log
 
       - name: Run tests
         run: pytest -v
