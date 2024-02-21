@@ -39,7 +39,7 @@ variable log_file {
 
 variable gcp_sa_key {
   type    = string
-  default = env("GCP_SA_KEY")
+  default = env("GCP_CREDENTIALS")
 }
 
 source "googlecompute" "centos-stream-8" {
@@ -47,7 +47,7 @@ source "googlecompute" "centos-stream-8" {
   source_image = "centos-stream-8-v20240110"
   ssh_username = "packer"
   zone         = "us-east1-b"
-  account_file = "${var.gcp_sa_key}"
+  account_file = "${var.GCP_CREDENTIALS}"
   network      = "default"
 }
 
