@@ -52,15 +52,12 @@ jobs:
 
       - name: Install Packer
         run: |
-          curl -SL
-          https://releases.hashicorp.com/packer/1.4.2/packer_1.4.2_linux_amd64.zip
-          -o packer_1.4.2_linux_amd64.zip
+          PACKER_VERSION="1.10.1"
+          curl -O https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+          unzip packer_${PACKER_VERSION}_linux_amd64.zip
+          sudo mv packer /usr/local/bin
+          packer version
 
-          unzip -o packer_1.4.2_linux_amd64.zip -d /tmp
-
-          sudo mv /tmp/packer /usr/bin/packer
-
-          packer --version
       - name: Create webapp.zip
         run: |
           zip -r webapp.zip .
@@ -71,6 +68,6 @@ jobs:
       - name: Validate Packer Configuration
         run: |
           packer validate packer/gci-machine-image.pkr.hcl
-      - name: Build Amazon Machine Image
+      - name: Build Golden Image for GCE
         run: |
           packer build packer/gci-machine-image.pkr.hcl
