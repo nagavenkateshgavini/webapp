@@ -15,6 +15,10 @@ jobs:
       FLASK_APP: 'app'
       LOG_FILE: ${{ secrets.LOG_FILE }}
       GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      SOURCE_GCI_IMAGE: ${{ secrets.SOURCE_GCI_IMAGE }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_IMAGE_BUILD_NETWORK: ${{ secrets.GCP_IMAGE_BUILD_NETWORK }}
+      BUILD_IMAGE_ZONE: ${{ secrets.BUILD_IMAGE_ZONE }}
 
     steps:
       - name: Checkout repository
