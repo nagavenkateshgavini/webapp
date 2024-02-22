@@ -70,7 +70,7 @@ source "googlecompute" "centos-stream-8" {
   zone         = "${var.build_image_zone}"
   account_file = "${var.gcp_sa_key}"
   network      = "${var.build_network}"
-  machine_type = "e2-standard-16"
+  machine_type = "e2-standard-4"
 }
 
 build {
