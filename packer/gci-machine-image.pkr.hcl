@@ -64,7 +64,7 @@ variable source_gci_image {
 
 
 source "googlecompute" "centos-stream-8" {
-  project_id   = "${var.project_id}"
+  project_id   = "${var.project_id}  "
 
 
 
