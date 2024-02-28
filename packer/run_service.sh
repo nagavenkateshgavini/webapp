@@ -30,6 +30,7 @@ Type=simple
 User=csye6225
 Group=csye6225
 WorkingDirectory=$HOME/webapp
+EnvironmentFile=/etc/environment
 ExecStart=${PYTHON_PATH} $HOME/webapp/run.py
 Restart=always
 RestartSec=3
