@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-sudo dnf update -y
 sudo dnf install -y python39
 
 echo "Verifying Python version"
