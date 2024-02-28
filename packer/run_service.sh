@@ -17,7 +17,7 @@ sudo mkdir -p /var/log/webappLogs
 sudo chown csye6225:csye6225 /var/log/webappLogs
 sudo touch $LOG_FILE
 sudo chown csye6225:csye6225 /var/log/webappLogs/webapp.log
-sudo chmod 666 $LOG_FILE
+sudo chmod 760 $LOG_FILE
 
 sudo tee /etc/systemd/system/csye6225.service <<EOF
 [Unit]

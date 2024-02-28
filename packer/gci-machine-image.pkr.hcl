@@ -37,6 +37,11 @@ variable source_image_family {
   default = env("SOURCE_IMAGE_FAMILY")
 }
 
+variable log_file {
+  type    = string
+  default = env("LOG_FILE")
+}
+
 
 source "googlecompute" "centos-stream-8" {
   project_id          = "${var.project_id}"
@@ -69,5 +74,8 @@ build {
 
   provisioner "shell" {
     script = "packer/run_service.sh"
+    environment_vars = [
+      "LOG_FILE=${var.log_file}"
+    ]
   }
 }
