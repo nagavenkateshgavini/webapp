@@ -50,7 +50,7 @@ jobs:
       - name: Initialize Packer Configuration and Format packer file
         run: |
           packer init packer/gci-machine-image.pkr.hcl
-          packer fmt packer/gci-machine-image.pkr.hcl
+          packer fmt -check packer/gci-machine-image.pkr.hcl
 
       - name: Validate Packer Configuration
         run: |

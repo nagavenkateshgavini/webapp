@@ -7,36 +7,6 @@ packer {
   }
 }
 
-variable mysql_host {
-  type    = string
-  default = env("MYSQL_HOST")
-}
-
-variable mysql_user {
-  type    = string
-  default = env("MYSQL_USER")
-}
-
-variable mysql_password {
-  type    = string
-  default = env("MYSQL_PASSWORD")
-}
-
-variable mysql_db {
-  type    = string
-  default = env("MYSQL_DB")
-}
-
-variable flask_app {
-  type    = string
-  default = env("FLASK_APP")
-}
-
-variable log_file {
-  type    = string
-  default = env("LOG_FILE")
-}
-
 variable gcp_sa_key {
   type    = string
   default = env("GCP_CREDENTIALS")
@@ -62,13 +32,20 @@ variable source_gci_image {
   default = env("SOURCE_GCI_IMAGE")
 }
 
+variable source_image_family {
+  type    = string
+  default = env("SOURCE_IMAGE_FAMILY")
+}
+
+
 source "googlecompute" "centos-stream-8" {
-  project_id   = "${var.project_id}"
-  source_image = "${var.source_gci_image}"
-  ssh_username = "csye6225"
-  zone         = "${var.build_image_zone}"
-  account_file = "${var.gcp_sa_key}"
-  network      = "${var.build_network}"
+  project_id          = "${var.project_id}"
+  source_image        = "${var.source_gci_image}"
+  source_image_family = "${var.source_image_family}"
+  ssh_username        = "csye6225"
+  zone                = "${var.build_image_zone}"
+  account_file        = "${var.gcp_sa_key}"
+  network             = "${var.build_network}"
 }
 
 build {
@@ -84,26 +61,6 @@ build {
 
   provisioner "shell" {
     script = "packer/install_python.sh"
-    environment_vars = [
-      "MYSQL_HOST=${var.mysql_host}",
-      "MYSQL_USER=${var.mysql_user}",
-      "MYSQL_PASSWORD=${var.mysql_password}",
-      "MYSQL_DB=${var.mysql_db}",
-      "FLASK_APP=${var.flask_app}",
-      "LOG_FILE=${var.log_file}"
-    ]
-  }
-
-  provisioner "shell" {
-    script = "packer/install_mysql.sh"
-    environment_vars = [
-      "MYSQL_HOST=${var.mysql_host}",
-      "MYSQL_USER=${var.mysql_user}",
-      "MYSQL_PASSWORD=${var.mysql_password}",
-      "MYSQL_DB=${var.mysql_db}",
-      "FLASK_APP=${var.flask_app}",
-      "LOG_FILE=${var.log_file}"
-    ]
   }
 
   provisioner "shell" {
@@ -112,13 +69,5 @@ build {
 
   provisioner "shell" {
     script = "packer/run_service.sh"
-    environment_vars = [
-      "MYSQL_HOST=${var.mysql_host}",
-      "MYSQL_USER=${var.mysql_user}",
-      "MYSQL_PASSWORD=${var.mysql_password}",
-      "MYSQL_DB=${var.mysql_db}",
-      "FLASK_APP=${var.flask_app}",
-      "LOG_FILE=${var.log_file}"
-    ]
   }
 }
