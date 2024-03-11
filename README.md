@@ -53,4 +53,4 @@ Build Image and upload google cloud
 packer build packer/gci-machine-image.pkr.hcl
 ```
 
-More details will be added soon...
+More details will be added soon..
