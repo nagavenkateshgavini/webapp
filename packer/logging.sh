@@ -34,7 +34,7 @@ logging:
     pipelines:
       default_pipeline:
         receivers: [webapp-receiver]
-        processors: [webapp-processor]
+        processors: [webapp-processor, move_severity]
 
 EOF
 
