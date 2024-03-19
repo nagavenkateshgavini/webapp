@@ -1,15 +1,29 @@
+import json
 import logging
 from logging.handlers import RotatingFileHandler
-
 from config import app_config
 import constants
+
+
+class JsonFormatter(logging.Formatter):
+    def format(self, record):
+        log_message = {
+            "time": self.formatTime(record, self.datefmt),
+            "level": record.levelname,
+            "message": record.getMessage()
+        }
+        if hasattr(record, 'exc_info') and record.exc_info:
+            log_message["exception"] = self.formatException(record.exc_info)
+        return json.dumps(log_message)
 
 
 def set_up_logger():
     logger = logging.getLogger(constants.PROJECT_ROOT)
 
     logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+    # Initialize the JSON formatter
+    formatter = JsonFormatter()
 
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)

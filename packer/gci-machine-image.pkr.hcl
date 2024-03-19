@@ -78,4 +78,11 @@ build {
       "LOG_FILE=${var.log_file}"
     ]
   }
+
+  provisioner "shell" {
+    script = "packer/logging.sh"
+    environment_vars = [
+      "LOG_FILE=${var.log_file}"
+    ]
+  }
 }

@@ -8,7 +8,7 @@ from log import logger
 
 
 def authenticate_user_and_return_obj(user_obj: User):
-    logger.debug("inside auth function")
+    logger.info("inside auth function")
     try:
         user_from_db = db.session.execute(db.select(User).filter_by(
             username=user_obj.username)).scalar_one()

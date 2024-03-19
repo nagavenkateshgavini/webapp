@@ -13,16 +13,24 @@ def error_handler(func):
             result = func(*args, **kwargs)
             return result
         except NotFoundError as e:
+            error_message = f"An error occurred: {str(e)}"
+            logger.exception(error_message)
             return make_response({"error": e.message}, e.status_code)
         except AuthError as e:
+            error_message = f"An error occurred: {str(e)}"
+            logger.exception(error_message)
             return make_response({"error": e.message}, e.status_code)
         except InvalidInputError as e:
+            error_message = f"An error occurred: {str(e)}"
+            logger.exception(error_message)
             return make_response({"error": e.message}, e.status_code)
         except CustomError as e:
+            error_message = f"An error occurred: {str(e)}"
+            logger.exception(error_message)
             return make_response({"error": e.message}, e.status_code)
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            logger.error(error_message, sys.exc_info())
+            logger.exception(error_message)
             return make_response({'error': error_message}, 500)
 
     return wrapper

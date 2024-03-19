@@ -16,7 +16,7 @@ bp = Blueprint('main', __name__)
 @bp.route("/healthz", methods=['GET'])
 @error_handler
 def healthcheck() -> Response:
-    logger.debug("health api gets called")
+    logger.info("health api gets called")
 
     if request.get_data() or request.args:
         return make_response('', 400)
@@ -24,7 +24,7 @@ def healthcheck() -> Response:
     try:
         db_utils.check_db_connection()
     except Exception as e:
-        logger.info(f"Issue occurring with DB connection, error: {e}")
+        logger.error(f"Issue occurring with DB connection, error: {e}")
         return make_response('', 503)
 
     return make_response('', 200)
@@ -33,7 +33,7 @@ def healthcheck() -> Response:
 @bp.route("/v1/user/self", methods=['GET'])
 @error_handler
 def get_user() -> Union[Response, dict]:
-    logger.debug("get_user gets called")
+    logger.info("get_user gets called")
 
     auth = request.authorization
     if not auth:
@@ -51,7 +51,7 @@ def get_user() -> Union[Response, dict]:
 @bp.route("/v1/user/self", methods=['PUT'])
 @error_handler
 def update_user() -> Response:
-    logger.debug("update_user gets called")
+    logger.info("update_user gets called")
     auth = request.authorization
     if not auth:
         return make_response({"error": "basic auth is required"}, 401)
@@ -76,7 +76,7 @@ def update_user() -> Response:
 @bp.route("/v1/user", methods=['POST'])
 @error_handler
 def create_user() -> Response:
-    logger.debug("create_user gets called")
+    logger.info("create_user gets called")
 
     if request.method != "POST" or request.content_type != "application/json":
         return make_response('', 400)
