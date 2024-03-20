@@ -1,3 +1,5 @@
+import logging
+
 from typing import Union
 from flask import Response, request, make_response
 from flask import Blueprint
@@ -19,6 +21,7 @@ def healthcheck() -> Response:
     logger.info("health api gets called")
 
     if request.get_data() or request.args:
+        logging.warning("Bad request, data is not required")
         return make_response('', 400)
 
     try:

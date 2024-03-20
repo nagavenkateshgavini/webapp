@@ -8,7 +8,7 @@ from log import logger
 
 
 def authenticate_user_and_return_obj(user_obj: User):
-    logger.info("inside auth function")
+    logger.debug("inside auth function")
     try:
         user_from_db = db.session.execute(db.select(User).filter_by(
             username=user_obj.username)).scalar_one()
@@ -31,6 +31,7 @@ def get_user_info(user_obj: User) -> dict:
 
 
 def insert_user(user_obj: User) -> None:
+    logger.debug("Creating user...")
     user_obj.hash_password(user_obj.password)
     db.session.add(user_obj)
     try:
