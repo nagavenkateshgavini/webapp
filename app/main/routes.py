@@ -21,7 +21,7 @@ def healthcheck() -> Response:
     logger.info("health api gets called")
 
     if request.get_data() or request.args:
-        logging.warning("Bad request, data is not required")
+        logger.warning("Bad request, data is not required")
         return make_response('', 400)
 
     try:
@@ -82,6 +82,7 @@ def create_user() -> Response:
     logger.info("create_user gets called")
 
     if request.method != "POST" or request.content_type != "application/json":
+        logger.warning("Method should be post")
         return make_response('', 400)
 
     req = request.json
