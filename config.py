@@ -22,6 +22,10 @@ class Config:
     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}' \
         if MYSQL_PASSWORD else f'mysql+pymysql://{MYSQL_USER}@{MYSQL_HOST}/{MYSQL_DB}'
     FLASK_APP = env.get("FLASK_APP")
+    GOOGLE_APPLICATION_CREDENTIALS = env.get("GOOGLE_APPLICATION_CREDENTIALS")
+    GCP_PROJECT_ID = env.get("GCP_PROJECT_ID")
+    PUBSUB_TOPIC_ID = env.get("PUBSUB_TOPIC_ID")
+    TEST_ENV = True if env.get("ENV_TYPE") == "Test" else False
 
 
 app_config = Config()

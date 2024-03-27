@@ -6,6 +6,7 @@ from flask import Blueprint
 
 from error import error_handler
 from log import logger
+from config import app_config
 from service.utils import db_utils
 from service.user import account_manager
 from app.models import user
@@ -93,10 +94,25 @@ def create_user() -> Response:
     return make_response(user_obj.as_dict(), 201)
 
 
+@bp.route("/v1/verify_email/<email_id>", methods=['GET'])
+@error_handler
+def verify_email(email_id) -> Response:
+    logger.info("verify_email gets called")
+
+    if not email_id:
+        return make_response('', 400)
+
+    user_obj = _prepare_user_obj({"username": email_id})
+    account_manager.verify_email(user_obj)
+
+    return make_response('User Successfully verified', 200)
+
+
 def _prepare_user_obj(req):
     return user.User(
         username=req.get('username'),
         password=req.get('password'),
         first_name=req.get('first_name'),
-        last_name=req.get('last_name')
+        last_name=req.get('last_name'),
+        email_verified=True if app_config.TEST_ENV else False
     )

@@ -59,6 +59,7 @@ def _parse_insert_user(req):
         raise InvalidInputError("first_name should be string")
 
 
+
 def _parse_get_user(req):
     if req.data or req.query_string:
         raise InvalidInputError("no data is accepted")
