@@ -53,7 +53,7 @@ def insert_user(user_obj: User) -> None:
     db.session.add(user_obj)
     try:
         db.session.commit()
-        publish_message(user_obj.username)
+        publish_message({"email_id": user_obj.username})
     except IntegrityError:
         db.session.rollback()
         raise ConflictError("user exists already, create  a new one")

@@ -1,3 +1,5 @@
+import json
+
 from google.cloud import pubsub_v1
 
 from config import app_config
@@ -17,7 +19,8 @@ def publish_message(message, project_id=app_config.GCP_PROJECT_ID,
     topic_path = publisher.topic_path(project_id, topic_id)
 
     # Convert the message to bytes
-    message_bytes = message.encode("utf-8")
+    message_str = json.dumps(message)
+    message_bytes = message_str.encode("utf-8")
 
     # Publish the message
     future = publisher.publish(topic_path, data=message_bytes)

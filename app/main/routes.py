@@ -105,7 +105,8 @@ def verify_email(email_id) -> Response:
     user_obj = _prepare_user_obj({"username": email_id})
     account_manager.verify_email(user_obj)
 
-    return make_response('User Successfully verified', 200)
+    message = {"message": 'User Successfully verified'}
+    return make_response(message, 200)
 
 
 def _prepare_user_obj(req):
