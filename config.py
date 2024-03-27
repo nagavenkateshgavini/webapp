@@ -26,6 +26,7 @@ class Config:
     GCP_PROJECT_ID = env.get("GCP_PROJECT_ID")
     PUBSUB_TOPIC_ID = env.get("PUBSUB_TOPIC_ID")
     TEST_ENV = True if env.get("ENV_TYPE") == "Test" else False
+    EMAIL_VERIFY_TTL = env.get("EMAIL_VERIFY_TTL", 2)
 
 
 app_config = Config()

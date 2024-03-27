@@ -8,6 +8,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 import bcrypt
 
 from app.extensions import db, bcrypt
+from config import app_config
 
 
 class Base(DeclarativeBase):
@@ -38,6 +39,6 @@ class User(db.Model):
 
     def verify_email(self, curr_time):
         time_diff = curr_time - self.email_sent_time
-        if time_diff > timedelta(minutes=2):
+        if time_diff > timedelta(minutes=app_config.EMAIL_VERIFY_TTL):
             return False
         return True
