@@ -13,6 +13,7 @@ jobs:
       MYSQL_DB: ${{ secrets.MYSQL_DB }}
       FLASK_APP: "app"
       LOG_FILE: './var/logs/webapp.log'
+      ENV_TYPE: "Test"
 
     steps:
       - name: Checkout repository
