@@ -72,3 +72,9 @@ class AuthError(CustomError):
     """Raised when the input provided is invalid."""
     def __init__(self, message="Invalid input"):
         super().__init__(status_code=401, message=message)
+
+
+class ForbiddenError(CustomError):
+    """Raised when the input provided is invalid."""
+    def __init__(self, message="Invalid input"):
+        super().__init__(status_code=403, message=message)

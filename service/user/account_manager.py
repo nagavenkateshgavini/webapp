@@ -4,7 +4,7 @@ from app.extensions import db
 from sqlalchemy.exc import NoResultFound, IntegrityError
 
 from app.models.user import User
-from error import AuthError, ConflictError, CustomError
+from error import AuthError, ConflictError, CustomError, ForbiddenError
 
 from publisher import publish_message
 from log import logger
@@ -26,7 +26,7 @@ def authenticate_user_and_return_obj(user_obj: User):
         raise AuthError("user is not authenticated")
 
     if not user_from_db.email_verified:
-        raise AuthError("user email is not yet verified")
+        raise ForbiddenError("user email is not yet verified")
 
     return user_from_db
 
