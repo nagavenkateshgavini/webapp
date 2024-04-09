@@ -59,31 +59,31 @@ jobs:
           RANDOM_ID=$(cat /proc/sys/kernel/random/uuid)
           
           gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID\
-          --machine-type=$MACHINE_TYPE --create-disk=image=projects/$GCP_PROJECT_ID/global/images/$IMAGE_ID, type=$DISK_TYPE, size=$DISK_SIZE, \
-          kms-key=projects/$GCP_PROJECT_ID/locations/$GCP_REGION/keyRings/$KEY_RING/cryptoKeys/VM_KMS_DISK_KEY
+          --machine-type=${env.MACHINE_TYPE} --create-disk=image=projects/${env.GCP_PROJECT_ID}/global/images/$IMAGE_ID, type=${ env.DISK_TYPE }, size=${ env.DISK_SIZE}, \
+          kms-key=projects/${ env.GCP_PROJECT_ID }/locations/${ env.GCP_REGION }/keyRings/${ env.KEY_RING }/cryptoKeys/${ env.VM_KMS_DISK_KEY }
           --metadata=startup-script='#!/bin/bash
 
           FILE_PATH="/etc/environment"
 
           # Export env variables only when file doesn't exist
           if [[ ! -e $FILE_PATH || ! -s $FILE_PATH ]]; then
-              echo "MYSQL_HOST=$CLOUD_SQL_HOST" | sudo tee -a /etc/environment
-              echo "MYSQL_USER=$CLOUD_SQL_USER" | sudo tee -a /etc/environment
-              echo "MYSQL_PASSWORD=$CLOUD_SQL_PASSWORD" | sudo tee -a /etc/environment
-              echo "MYSQL_DB=$CLOUD_SQL_DB" | sudo tee -a /etc/environment
-              echo "LOG_FILE=$LOG_FILE" | sudo tee -a /etc/environment
-              echo "GCP_PROJECT_ID=$GCP_PROJECT_ID" | sudo tee -a /etc/environment
-              echo "PUBSUB_TOPIC_ID=$PUBSUB_TOPIC" | sudo tee -a /etc/environment
+              echo "MYSQL_HOST=${ env.CLOUD_SQL_HOST }" | sudo tee -a /etc/environment
+              echo "MYSQL_USER=${ env.CLOUD_SQL_USER }" | sudo tee -a /etc/environment
+              echo "MYSQL_PASSWORD=${ env.CLOUD_SQL_PASSWORD }" | sudo tee -a /etc/environment
+              echo "MYSQL_DB=${ env.CLOUD_SQL_DB }" | sudo tee -a /etc/environment
+              echo "LOG_FILE=${ env.LOG_FILE }" | sudo tee -a /etc/environment
+              echo "GCP_PROJECT_ID=${ env.GCP_PROJECT_ID }" | sudo tee -a /etc/environment
+              echo "PUBSUB_TOPIC_ID=${ env.PUBSUB_TOPIC }" | sudo tee -a /etc/environment
           fi
 
           sudo touch /var/log/start_up_executed' \
-          --network-interface=network=$VPC_NETWORK_NAME, subnet=$SUB_NETWORK_NAME \
+          --network-interface=network=${ env.VPC_NETWORK_NAME }, subnet=${ env.SUB_NETWORK_NAME } \
           --tags webapp \
-          --service-account=$SERVICE_ACCOUNT_ID --scopes=["pubsub", "cloud-platform"]
+          --service-account=${ env.SERVICE_ACCOUNT_ID } --scopes=["pubsub", "cloud-platform"]
 
-          gcloud compute instance-groups managed rolling-action start-update $INSTANCE_GROUP_NAME \
+          gcloud compute instance-groups managed rolling-action start-update ${ env.INSTANCE_GROUP_NAME } \
           --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
           --max-unavailable=1 --max-surge=0
           
-          gcloud compute instance-groups managed wait-until $INSTANCE_GROUP_NAME \
+          gcloud compute instance-groups managed wait-until ${ env.INSTANCE_GROUP_NAME } \
           --version-target-reached
