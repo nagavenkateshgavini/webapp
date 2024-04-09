@@ -59,8 +59,8 @@ jobs:
           RANDOM_ID=$(cat /proc/sys/kernel/random/uuid)
           
           gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID \
-          --machine-type=${{ secrets.MACHINE_TYPE }} --create-disk=image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/$IMAGE_ID, type=${{ secrets.DISK_TYPE }}, size=${{ secrets.DISK_SIZE }}, \
-          kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.GCP_REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.VM_KMS_DISK_KEY }} \
+          --project=${{ secrets.GCP_PROJECT_ID }} 
+          --machine-type=${{ secrets.MACHINE_TYPE }} --create-disk=image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/$IMAGE_ID,type=${{ secrets.DISK_TYPE }},size=${{ secrets.DISK_SIZE }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.GCP_REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.VM_KMS_DISK_KEY }},auto-delete=yes,boot=yes,device-name=persistent-disk-0 \
           --metadata=startup-script='#!/bin/bash
 
           FILE_PATH="/etc/environment"
@@ -77,9 +77,9 @@ jobs:
           fi
 
           sudo touch /var/log/start_up_executed' \
-          --network-interface=network=${{ secrets.VPC_NETWORK_NAME }}, subnet=${{ secrets.SUB_NETWORK_NAME }} \
-          --tags webapp \
-          --service-account=${{ secrets.SERVICE_ACCOUNT_ID }} --scopes=["pubsub", "cloud-platform"]
+          --network-interface=network=${{ secrets.VPC_NETWORK_NAME }},subnet=${{ secrets.SUB_NETWORK_NAME }},no-address \
+          --tags webapp --maintenance-policy=MIGRATE --provisioning-model=STANDARD --region=us-west1 --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any \
+          --service-account=${{ secrets.SERVICE_ACCOUNT_ID }} --scopes=pubsub,cloud-platform
 
           gcloud compute instance-groups managed rolling-action start-update ${ env.INSTANCE_GROUP_NAME } \
           --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
