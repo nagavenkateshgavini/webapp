@@ -119,8 +119,7 @@ jobs:
         run: |
           gcloud compute instance-templates create \
           --machine-type=$MACHINE_TYPE --name="webapp-instance-template-${{ steps.generate_random_id.outputs.random_id }}" \
-          --create-disk=image="projects/$GCP_PROJECT_ID/global/images/${{ steps.fetch_image_id.outputs.image_id }}" \
-          type=$DISK_TYPE, size=$DISK_SIZE, mode=$DISK_MODE, \
+          --create-disk=image="projects/$GCP_PROJECT_ID/global/images/${{ steps.fetch_image_id.outputs.image_id }}", type=$DISK_TYPE, size=$DISK_SIZE, mode=$DISK_MODE, \
           kms-key="projects/$GCP_PROJECT_ID/locations/$GCP_REGION/keyRings/$KEY_RING/cryptoKeys/VM_KMS_DISK_KEY"
           --metadata=startup-script='#!/bin/bash
 
