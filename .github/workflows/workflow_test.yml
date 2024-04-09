@@ -78,12 +78,12 @@ jobs:
 
           sudo touch /var/log/start_up_executed' \
           --network-interface=network=${{ secrets.VPC_NETWORK_NAME }},subnet=${{ secrets.SUB_NETWORK_NAME }},no-address \
-          --tags webapp --maintenance-policy=MIGRATE --provisioning-model=STANDARD --region=us-west1 --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any \
+          --tags webapp --maintenance-policy=MIGRATE --provisioning-model=STANDARD --region=${{ secrets.GCP_REGION }} --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any \
           --service-account=${{ secrets.SERVICE_ACCOUNT_ID }} --scopes=pubsub,cloud-platform
 
           gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
           --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
-          --max-unavailable=1 --max-surge=0
+          --max-unavailable=1 --max-surge=0 --region=${{ secrets.GCP_REGION }}
           
           gcloud compute instance-groups managed wait-until ${{ secrets.INSTANCE_GROUP_NAME }} \
-          --version-target-reached
+          --version-target-reached --region=${{ secrets.GCP_REGION }}
