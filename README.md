@@ -14,7 +14,7 @@ Cloud native web application
 pip install -r requirements.txt
 ```
 3. Run the app
-   ``commandline
+   ```commandline
    export FLASK_APP=app
    flask run
    ```
