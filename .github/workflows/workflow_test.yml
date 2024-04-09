@@ -58,9 +58,9 @@ jobs:
           | tail -n 1)
           RANDOM_ID=$(cat /proc/sys/kernel/random/uuid)
           
-          gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID\
+          gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID \
           --machine-type=${env.MACHINE_TYPE} --create-disk=image=projects/${env.GCP_PROJECT_ID}/global/images/$IMAGE_ID, type=${ env.DISK_TYPE }, size=${ env.DISK_SIZE}, \
-          kms-key=projects/${ env.GCP_PROJECT_ID }/locations/${ env.GCP_REGION }/keyRings/${ env.KEY_RING }/cryptoKeys/${ env.VM_KMS_DISK_KEY }
+          kms-key=projects/${ env.GCP_PROJECT_ID }/locations/${ env.GCP_REGION }/keyRings/${ env.KEY_RING }/cryptoKeys/${ env.VM_KMS_DISK_KEY } \
           --metadata=startup-script='#!/bin/bash
 
           FILE_PATH="/etc/environment"
