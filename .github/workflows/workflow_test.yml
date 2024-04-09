@@ -83,7 +83,7 @@ jobs:
 
           gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
           --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
-          --max-unavailable=1 --max-surge=0 --region=${{ secrets.GCP_REGION }}
+          --max-surge=0 --region=${{ secrets.GCP_REGION }}
           
           gcloud compute instance-groups managed wait-until ${{ secrets.INSTANCE_GROUP_NAME }} \
           --version-target-reached --region=${{ secrets.GCP_REGION }}
