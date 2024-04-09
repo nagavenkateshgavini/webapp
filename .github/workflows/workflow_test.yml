@@ -65,7 +65,7 @@ jobs:
 
           FILE_PATH="/etc/environment"
 
-          # Export env variables only when file doesn't exist
+          # Export env variables only when file doesnt exist
           if [[ ! -e $FILE_PATH || ! -s $FILE_PATH ]]; then
               echo "MYSQL_HOST=${{ secrets.CLOUD_SQL_HOST }}" | sudo tee -a /etc/environment
               echo "MYSQL_USER=${{ secrets.CLOUD_SQL_USER }}" | sudo tee -a /etc/environment
