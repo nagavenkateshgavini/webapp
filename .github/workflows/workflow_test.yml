@@ -81,7 +81,7 @@ jobs:
           --tags webapp --maintenance-policy=MIGRATE --provisioning-model=STANDARD --region=us-west1 --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any \
           --service-account=${{ secrets.SERVICE_ACCOUNT_ID }} --scopes=pubsub,cloud-platform
 
-          gcloud compute instance-groups managed rolling-action start-update ${ env.INSTANCE_GROUP_NAME } \
+          gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
           --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
           --max-unavailable=1 --max-surge=0
           
