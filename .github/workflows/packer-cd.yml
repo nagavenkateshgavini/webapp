@@ -101,6 +101,7 @@ jobs:
       - name: Build Golden Image for GCE
         run: |
           packer build packer/gci-machine-image.pkr.hcl
+          sleep 60
 
       - name: Get the latest packer build
         id: fetch_image_id
