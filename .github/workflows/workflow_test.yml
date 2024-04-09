@@ -49,17 +49,17 @@ jobs:
       - name: 'Use gcloud CLI'
         run: gcloud info
 
-      - name: Get the latest packer build
-        id: fetch_image_id
+      - name: Continuous deployment of the code
         run: |
+          gcloud components update
+
           IMAGE_ID=$(gcloud compute images list --no-standard-images \
             --format="table(NAME,CREATION_TIMESTAMP)" --sort-by="CREATION_TIMESTAMP" \
           | tail -n 1)
           RANDOM_ID=$(cat /proc/sys/kernel/random/uuid)
           
-          gcloud compute instance-templates create \
-          --machine-type=$MACHINE_TYPE --name=webapp-instance-template-$RANDOM_ID \
-          --create-disk=image=projects/$GCP_PROJECT_ID/global/images/$IMAGE_ID \
+          gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID\
+          --machine-type=$MACHINE_TYPE --create-disk=image=projects/$GCP_PROJECT_ID/global/images/$IMAGE_ID \
           type=$DISK_TYPE, size=$DISK_SIZE, mode=$DISK_MODE, \
           kms-key=projects/$GCP_PROJECT_ID/locations/$GCP_REGION/keyRings/$KEY_RING/cryptoKeys/VM_KMS_DISK_KEY
           --metadata=startup-script='#!/bin/bash
