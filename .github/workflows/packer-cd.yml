@@ -103,51 +103,48 @@ jobs:
           packer build packer/gci-machine-image.pkr.hcl
           sleep 60
 
-      - name: Get the latest packer build
-        id: fetch_image_id
+      - name: Continuous deployment of the code
         run: |
-          echo 'image_id=$(gcloud compute images list --no-standard-images \
+          gcloud components update
+
+          IMAGE_ID=$(gcloud compute images list --no-standard-images \
             --format="table(NAME,CREATION_TIMESTAMP)" --sort-by="CREATION_TIMESTAMP" \
-          | tail -n 1)' >> $GITHUB_OUTPUT
+          | tail -n 1)
 
-      - name: Generate a random ID for the instance template name
-        id: generate_random_id
-        run: echo "::set-output name=random_id::$(cat /proc/sys/kernel/random/uuid)"
+          echo "Latest Image Id is: $IMAGE_ID"
 
-      - name: Create instance template
-        id: fetch_template_name
-        run: |
-          gcloud compute instance-templates create \
-          --machine-type=$MACHINE_TYPE --name="webapp-instance-template-${{ steps.generate_random_id.outputs.random_id }}" \
-          --create-disk=image="projects/$GCP_PROJECT_ID/global/images/${{ steps.fetch_image_id.outputs.image_id }}", type=$DISK_TYPE, size=$DISK_SIZE, \
-          kms-key="projects/$GCP_PROJECT_ID/locations/$GCP_REGION/keyRings/$KEY_RING/cryptoKeys/VM_KMS_DISK_KEY"
+          RANDOM_ID=$(cat /proc/sys/kernel/random/uuid)
+
+          echo "Instance template name: webapp-instance-template-$RANDOM_ID"
+
+          gcloud compute instance-templates create webapp-instance-template-$RANDOM_ID \
+          --project=${{ secrets.GCP_PROJECT_ID }} \
+          --machine-type=${{ secrets.MACHINE_TYPE }} --create-disk=image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/$IMAGE_ID,type=${{ secrets.DISK_TYPE }},size=${{ secrets.DISK_SIZE }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.GCP_REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.VM_KMS_DISK_KEY }},auto-delete=yes,boot=yes,device-name=persistent-disk-0 \
           --metadata=startup-script='#!/bin/bash
 
           FILE_PATH="/etc/environment"
 
-          # Export env variables only when file doesn't exist
+          # Export env variables only when file doesnt exist
           if [[ ! -e $FILE_PATH || ! -s $FILE_PATH ]]; then
-              echo "MYSQL_HOST=$CLOUD_SQL_HOST" | sudo tee -a /etc/environment
-              echo "MYSQL_USER=$CLOUD_SQL_USER" | sudo tee -a /etc/environment
-              echo "MYSQL_PASSWORD=$CLOUD_SQL_PASSWORD" | sudo tee -a /etc/environment
-              echo "MYSQL_DB=$CLOUD_SQL_DB" | sudo tee -a /etc/environment
-              echo "LOG_FILE=$LOG_FILE" | sudo tee -a /etc/environment
-              echo "GCP_PROJECT_ID=$GCP_PROJECT_ID" | sudo tee -a /etc/environment
-              echo "PUBSUB_TOPIC_ID=$PUBSUB_TOPIC" | sudo tee -a /etc/environment
+              echo "MYSQL_HOST=${{ secrets.CLOUD_SQL_HOST }}" | sudo tee -a /etc/environment
+              echo "MYSQL_USER=${{ secrets.CLOUD_SQL_USER }}" | sudo tee -a /etc/environment
+              echo "MYSQL_PASSWORD=${{ secrets.CLOUD_SQL_PASSWORD }}" | sudo tee -a /etc/environment
+              echo "MYSQL_DB=${{ secrets.CLOUD_SQL_DB }}" | sudo tee -a /etc/environment
+              echo "LOG_FILE=${{ secrets.LOG_FILE }}" | sudo tee -a /etc/environment
+              echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" | sudo tee -a /etc/environment
+              echo "PUBSUB_TOPIC_ID=${{ secrets.PUBSUB_TOPIC }}" | sudo tee -a /etc/environment
           fi
 
           sudo touch /var/log/start_up_executed' \
-          --network-interface=network=$VPC_NETWORK_NAME, subnet=$SUB_NETWORK_NAME \
-          --tags webapp \
-          --service-account=$SERVICE_ACCOUNT_ID --scopes=["pubsub", "cloud-platform"]
+          --network-interface=network=${{ secrets.VPC_NETWORK_NAME }},subnet=${{ secrets.SUB_NETWORK_NAME }},no-address \
+          --tags webapp --maintenance-policy=MIGRATE --provisioning-model=STANDARD --region=${{ secrets.GCP_REGION }} --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any \
+          --service-account=${{ secrets.SERVICE_ACCOUNT_ID }} --scopes=pubsub,cloud-platform
 
-      - name: Create managed instance group
-        run: |
-          gcloud compute instance-groups managed rolling-action start-update $INSTANCE_GROUP_NAME \
-          --replacement-method=recreate --version=template=webapp-instance-template-${{ steps.generate_random_id.outputs.random_id }} \
-          --max-unavailable=1 --max-surge=0
+          gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
+          --replacement-method=recreate --version=template=webapp-instance-template-$RANDOM_ID \
+          --max-surge=0 --region=${{ secrets.GCP_REGION }}
 
-      - name: Wait for REACHED status
-        run: |
-          gcloud compute instance-groups managed wait-until $INSTANCE_GROUP_NAME \
-          --version-target-reached
+          gcloud compute instance-groups managed wait-until ${{ secrets.INSTANCE_GROUP_NAME }} \
+          --version-target-reached --region=${{ secrets.GCP_REGION }}
+
+          echo "Instances were recreated with the latest build successfully !!"
