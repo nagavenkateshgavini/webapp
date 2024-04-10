@@ -55,3 +55,4 @@ packer build packer/gci-machine-image.pkr.hcl
 
 More details will be added soon.
  - Architecture diagram
+ - Components
