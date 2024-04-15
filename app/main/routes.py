@@ -34,7 +34,7 @@ def healthcheck() -> Response:
     return make_response('', 200)
 
 
-@bp.route("/v1/user/self", methods=['GET'])
+@bp.route("/v2/user/self", methods=['GET'])
 @error_handler
 def get_user() -> Union[Response, dict]:
     logger.info("get_user gets called")
@@ -52,7 +52,7 @@ def get_user() -> Union[Response, dict]:
     return account_manager.get_user_info(user_obj)
 
 
-@bp.route("/v1/user/self", methods=['PUT'])
+@bp.route("/v2/user/self", methods=['PUT'])
 @error_handler
 def update_user() -> Response:
     logger.info("update_user gets called")
@@ -77,7 +77,7 @@ def update_user() -> Response:
     return make_response('', 204)
 
 
-@bp.route("/v1/user", methods=['POST'])
+@bp.route("/v2/user", methods=['POST'])
 @error_handler
 def create_user() -> Response:
     logger.info("create_user gets called")
