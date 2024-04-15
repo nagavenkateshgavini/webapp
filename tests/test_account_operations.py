@@ -33,7 +33,7 @@ class TestAccountOperations(TestCase):
         return data
 
     def create_account(self, data):
-        response = self.client.post('/v1/user', json=data)
+        response = self.client.post('/v2/user', json=data)
         assert response.status_code == 201
 
     @staticmethod
@@ -49,7 +49,7 @@ class TestAccountOperations(TestCase):
 
         # get api
         response = self.client.get(
-            '/v1/user/self',
+            '/v2/user/self',
             headers=self.get_basic_auth_headers(
                 data["username"], data["password"])
         )
@@ -72,12 +72,12 @@ class TestAccountOperations(TestCase):
 
         # add sleep to check the account_updated value
         time.sleep(3)
-        update_response = self.client.put('/v1/user/self', json=updated_data,
+        update_response = self.client.put('/v2/user/self', json=updated_data,
                                           headers=self.get_basic_auth_headers(res_user_name, password))
         assert update_response.status_code == 204
 
         update_response = self.client.get(
-            '/v1/user/self',
+            '/v2/user/self',
             headers=self.get_basic_auth_headers(res_user_name, password)
         )
 
