@@ -1,8 +1,8 @@
 # User authentication webapp with GCP
 Cloud native web application
 
-Terraform Repo: https://github.com/nagavenkateshgavini/tf-gcp-infra
-Cloud Function Repo: https://github.com/nagavenkateshgavini/serverless
+- Terraform Repo: https://github.com/nagavenkateshgavini/tf-gcp-infra
+- Cloud Function Repo: https://github.com/nagavenkateshgavini/serverless
 
 ## Run details
 1. activate env
