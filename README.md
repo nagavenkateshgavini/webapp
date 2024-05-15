@@ -1,5 +1,8 @@
-# webapp_aws_cicd
+# User authentication webapp with GCP
 Cloud native web application
+
+Terraform Repo: https://github.com/nagavenkateshgavini/tf-gcp-infra
+Cloud Function Repo: https://github.com/nagavenkateshgavini/serverless
 
 ## Run details
 1. activate env
@@ -14,7 +17,7 @@ Cloud native web application
 pip install -r requirements.txt
 ```
 3. Run the app
-   ``commandline
+   ```commandline
    export FLASK_APP=app
    flask run
    ```
@@ -27,6 +30,17 @@ pip install -r requirements.txt
   - Exception handling with custom error message and status codes in python flask app
   - Integrations tests with pytest framework, tests the integration between mysql and flask API server
   - Google cloud golden Image creation with packer when new PR gets merged
+  - Developed a RESTful API with multiple endpoints like /healthz, /v1/user for health checks and user management using Node.js and Sequelize.
+  - Conducted integration testing for all API endpoints with pytest.
+  - Created a custom compute engine image with Hashicorp Packer and managed the service startup using systemd.
+  - Configured VPCs, subnets, compute engine, CloudSQL, and set up VPC peering through Private services access.
+  - Set up Cloud DNS with an A record for my domain pointing to the compute engine IP.
+  - Installed Ops Agent to handle application logs.
+  - Integrated Google Pubsub to trigger Cloud functions for email verification via Mailgun upon user registration.
+  - Connected Cloud SQL with Cloud function via VPC access connector for email tracking.
+  - Implemented a compute instance template, health checks, managed instance group, load balancer, external IP, and Google-managed SSL certificates using Terraform.
+  - Employed Customer-managed encryption keys for VMs, CloudSQL, and Cloud Storage, with a 30-day key rotation.
+  - Executed rolling updates across all instances in the managed group for seamless app deployments.
 
 This repo uses the following module for generating password hashed with salt
 - maxcountryman/flask-bcrypt
